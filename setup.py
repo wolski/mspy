@@ -1,6 +1,6 @@
 import sys
 import numpy
-from distutils.core import setup
+from setuptools import setup
 from distutils.extension import Extension
 
 # Build on WIN using MinGW:
@@ -12,21 +12,17 @@ from distutils.extension import Extension
 # Copy calculations.so to mspy directory
 
 
-# make include paths
-numpyInclude = numpy.get_include() + '/numpy'
-pythonInclude = sys.prefix + '/include'
-
 # make setup
 setup(
-    name = 'calculations',
-    version = '1.1',
-    author = "Martin Strohalm",
-    maintainer = 'Martin Strohalm',
-    description = "Fast calculations for mspy.",
+    name='mspy',
+    version='1.1.0',
+    author="Martin Strohalm",
+    maintainer='Martin Strohalm',
     ext_modules=[
-        Extension('calculations', ['calculations.c'],
-            include_dirs=[numpyInclude, pythonInclude]
-                  #,libraries=['m']
-        )
+        Extension('mspy.calculations', ['mspy/calculations.c'],)
     ],
+    packages=["mspy"],
+    include_package_data=True,
+    include_dirs=[numpy.get_include()],
+    install_requires=["numpy"],
 )

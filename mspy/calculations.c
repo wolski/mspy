@@ -3,7 +3,7 @@
 #include <time.h>
 
 #include "Python.h"
-#include "arrayobject.h"
+#include "numpy/arrayobject.h"
 
 
 typedef struct {
