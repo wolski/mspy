@@ -17,7 +17,7 @@ setup(
     name='mspy',
     version='1.1.0',
     author="Martin Strohalm",
-    maintainer='Martin Strohalm',
+    maintainer='Witold Wolski',
     ext_modules=[
         Extension('mspy.calculations', ['mspy/calculations.c'],)
     ],
