@@ -1,2 +1,5 @@
 .idea
 build
+*.pyc
+*.so
+mspy.egg-info
