@@ -25,8 +25,8 @@ setup(
     description = "Fast calculations for mspy.",
     ext_modules=[
         Extension('calculations', ['calculations.c'],
-            include_dirs=[numpyInclude, pythonInclude],
-            libraries=['m']
+            include_dirs=[numpyInclude, pythonInclude]
+                  #,libraries=['m']
         )
     ],
 )

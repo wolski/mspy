@@ -621,7 +621,7 @@ m_arrayd *signal_smooth_ma( m_arrayd *p_signal, int window, int cycles )
     // make kernel
     ksize = window + 1;
     ksum = window + 1;
-    double kernel[ksize];
+    double * kernel = (double *) malloc(sizeof(double) * ksize);
     for ( i = 0; i <= ksize; ++i ) {
         kernel[i] = 1/ksum;
     }
@@ -645,7 +645,7 @@ m_arrayd *signal_smooth_ma( m_arrayd *p_signal, int window, int cycles )
             p_result->data[2*i+1] = average;
         }
     }
-    
+    free(kernel);
     return p_result;
 }
 
@@ -680,7 +680,7 @@ m_arrayd *signal_smooth_ga( m_arrayd *p_signal, int window, int cycles )
     // make kernel
     ksize = window + 1;
     ksum = 0;
-    double kernel[ksize];
+    double * kernel = (double *) malloc( sizeof(double) * ksize);
     for ( i = 0; i <= ksize; ++i ) {
         r = (i - (ksize-1)/2.0);
         k = exp(-(r*r/(ksize*ksize/16.0)));
@@ -710,7 +710,7 @@ m_arrayd *signal_smooth_ga( m_arrayd *p_signal, int window, int cycles )
             p_result->data[2*i+1] = average;
         }
     }
-    
+    free(kernel);
     return p_result;
 }
 
