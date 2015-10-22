@@ -4,7 +4,12 @@
 
 #include "Python.h"
 #include "numpy/arrayobject.h"
+#include "stdlib.h"
 
+static double round(double val)
+{
+    return floor(val + 0.5);
+}
 
 typedef struct {
     double *data;
@@ -31,7 +36,6 @@ typedef struct {
     double level;
     double width;
 } m_noise;
-
 
 #define ELEM_SWAP(a,b) { register double t=(a);(a)=(b);(b)=t; }
 
@@ -593,10 +597,11 @@ m_arrayd *signal_normalize( m_arrayd *p_signal )
 m_arrayd *signal_smooth_ma( m_arrayd *p_signal, int window, int cycles )
 {
     m_arrayd *p_result;
-    double average, ksum;
-    int ksize;
+    double average,ksum;
     int c, i, j, idx;
-    
+    int ksize;
+    double * kernel;
+
     // init results
     if ( (p_result = (m_arrayd*) malloc( sizeof(m_arrayd)) ) == NULL ) {
         return NULL;
@@ -619,9 +624,10 @@ m_arrayd *signal_smooth_ma( m_arrayd *p_signal, int window, int cycles )
     }
     
     // make kernel
+
     ksize = window + 1;
-    ksum = window + 1;
-    double * kernel = (double *) malloc(sizeof(double) * ksize);
+    ksum = window + 1.;
+    kernel = (double *) malloc(sizeof(double) * ksize);
     for ( i = 0; i <= ksize; ++i ) {
         kernel[i] = 1/ksum;
     }
@@ -655,7 +661,7 @@ m_arrayd *signal_smooth_ga( m_arrayd *p_signal, int window, int cycles )
     double average, ksum, r, k;
     int ksize;
     int c, i, j, idx;
-    
+    double * kernel;
     // init results
     if ( (p_result = (m_arrayd*) malloc( sizeof(m_arrayd)) ) == NULL ) {
         return NULL;
@@ -680,7 +686,7 @@ m_arrayd *signal_smooth_ga( m_arrayd *p_signal, int window, int cycles )
     // make kernel
     ksize = window + 1;
     ksum = 0;
-    double * kernel = (double *) malloc( sizeof(double) * ksize);
+    kernel = (double *) malloc( sizeof(double) * ksize);
     for ( i = 0; i <= ksize; ++i ) {
         r = (i - (ksize-1)/2.0);
         k = exp(-(r*r/(ksize*ksize/16.0)));
